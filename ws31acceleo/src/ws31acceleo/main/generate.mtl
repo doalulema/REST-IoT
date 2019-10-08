@@ -1,0 +1,1341 @@
+[comment encoding = UTF-8 /]
+[module generate('http://www.example.org/wsmodel3')]
+
+[template public generateElement(aSystem : System)]
+[comment @main/]
+
+[comment SERVICIOS API RESTFULL/]
+[for (webservice : WebService | aSystem.webservice)]
+	[for (rest : REST | aSystem.webservice.rest)]
+		[file (rest.device.name.toString().concat('.bal'), false, 'UTF-8')]
+import ballerina/config;
+import ballerina/http;
+import ballerina/log;
+import ballerina/mysql;
+import ballerina/sql;
+import ballerina/io;
+
+public function main() {
+    createTable();
+}
+
+listener http:Listener httpListener = new([rest.port/]);
+
+type Device record {
+	string date;
+    string time;
+    string location;
+    int attribute;
+	string artefact;
+};
+
+			[if (webservice.dbserver.type.toString()='MySQL')]
+// Crear cliente SQL para la base de datos MySQL
+mysql:Client deviceDB = new({
+        host: config:getAsString("DATABASE_HOST", defaultValue = "[webservice.dbserver.host/]"),
+        port: config:getAsInt("DATABASE_PORT", defaultValue = [webservice.dbserver.port/]),
+        name: config:getAsString("DATABASE_NAME", defaultValue = "[webservice.dbserver.database/]"),
+        username: config:getAsString("DATABASE_USERNAME", defaultValue = "[webservice.dbserver.usser/]"),
+        password: config:getAsString("DATABASE_PASSWORD", defaultValue = "[webservice.dbserver.pass/]"),
+        dbOptions: { useSSL: false }
+    });
+			[/if]
+
+// Servicio para el dispositivo.
+@http:ServiceConfig {
+    basePath: "/[rest.URI/]"
+}
+
+service LedData on httpListener {
+
+    @http:ResourceConfig {
+        methods: [ '[' /]"POST"[ ']' /],
+
+        path: "/[rest.device.name/]/"
+    }
+
+    resource function addResource(http:Caller httpCaller, http:Request request) {
+        // Inicializar un mensaje de respuesta http vacio
+        http:Response response = new;
+
+        // Extraer los datos de la carga util de solicitud
+        var payloadJson = request.getJsonPayload();
+
+        if (payloadJson is json) {
+            Device|error deviceData = Device.convert(payloadJson);
+
+            if (deviceData is Device) {
+                // Validar la carga JSON
+                if ( deviceData.date == "" || deviceData.time == "" ||
+                    deviceData.location == "" || deviceData.attribute == -1 || deviceData.artefact == "") {
+                    response.setPayload("Error : json payload should contain
+                    {date:<string>, time:<string>, location:<string>, attribute:<int>, artefact:<string>}");
+                    response.statusCode = 400;
+                } else {
+                    // Invoque la funcion insertData para guardar datos en la base de datos MySQL
+                    json ret = insertData(deviceData.date, deviceData.time, deviceData.location,deviceData.attribute,deviceData.artefact);
+                    // Enviar la respuesta al cliente con los datos del empleado.
+                    response.setPayload(ret);
+                }
+            } else {
+                // Enviar una respuesta de error en caso de un error de conversion
+                response.statusCode = 400;
+                response.setPayload("Error: Please send the JSON payload in the correct format");
+            }
+        } else {
+            // Enviar una respuesta de error en caso de un error al recuperar la carga util de la solicitud
+            response.statusCode = 500;
+            response.setPayload("Error: An internal error occurred");
+        }
+        var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Registrar el error para los mantenedores del servicio.
+            log:printError("Error responding to the client", err = respondRet);
+        }
+    }
+
+    @http:ResourceConfig {
+        methods: [ '[' /]"GET"[ ']' /],
+
+        path: "/[rest.device.name/]/{id}"
+    }
+
+    resource function retrieveResource(http:Caller httpCaller, http:Request request, string
+        id) {
+        // Initialize an empty http response message
+        http:Response response = new;
+        // Convert the employeeId string to integer
+        var empID = int.convert(id);
+        if (empID is int) {
+            // Invoke retrieveById function to retrieve data from Mymysql database
+            var deviceData = retrieveById(empID);
+
+        io:println(deviceData);
+        response.setJsonPayload(untaint deviceData);
+
+        } else {
+            response.statusCode = 400;
+            response.setPayload("Error: Id parameter should be a valid integer");
+        }
+        var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Log the error for the service maintainers.
+            log:printError("Error responding to the device", err = respondRet);
+        }
+    }
+
+    @http:ResourceConfig {
+        methods: [ '[' /]"GET"[ ']' /],
+
+        path: "/[rest.device.name/]/all/"
+    }
+
+    resource function retrieveAllResource(http:Caller httpCaller, http:Request request) {
+        // Initialize an empty http response message
+        http:Response response = new;
+            // Invoke retrieveById function to retrieve data from Mymysql database
+            var deviceData = retrieveAll();
+            // Send the response back to the client with the employee data
+            response.setPayload(untaint deviceData);
+         var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Log the error for the service maintainers.
+            log:printError("Error responding to the client", err = respondRet);
+        }
+    }
+
+        @http:ResourceConfig {
+        methods: [ '[' /]"GET"[ ']' /],
+
+        path: "/[rest.device.name/]/last/"
+    }
+    resource function retrieveLastResource(http:Caller httpCaller, http:Request request) {
+        // Initialize an empty http response message
+        http:Response response = new;
+            // Invoke retrieveById function to retrieve data from Mymysql database
+            var deviceData = retrieveLast();
+            // Send the response back to the client with the employee data
+            response.setPayload(untaint deviceData);
+         var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Log the error for the service maintainers.
+            log:printError("Error responding to the client", err = respondRet);
+        }
+    }
+
+    @http:ResourceConfig {
+        methods: [ '[' /]"PUT"[ ']' /],
+
+        path: "/[rest.device.name/]/{id}"
+    }
+    
+    resource function updateResource(http:Caller httpCaller, http:Request request, int
+        id) {
+        // Initialize an empty http response message
+        http:Response response = new;
+         // Extract the data from the request payload
+        var payloadJson = request.getJsonPayload();
+        if (payloadJson is json) {
+            Device|error deviceData = Device.convert(payloadJson);
+
+            if (deviceData is Device) {
+				if (deviceData.date == "" || deviceData.time == "" ||
+                    deviceData.location == "" || deviceData.attribute == 0 || deviceData.artefact == "") {
+                    response.setPayload("Error : json payload should contain
+                    {id:<int>, date:<string>, id:<string>, time:<string>, location:<string>, attribute:<int>, artefact:<string>}");
+                    response.statusCode = 400;
+                }
+				 else {
+
+                    json ret = updateData(deviceData.date, deviceData.time, deviceData.location,deviceData.attribute,deviceData.artefact,id);
+                    response.setPayload(ret);
+
+                }
+            } else {
+                // Send an error response in case of a conversion failure
+                response.statusCode = 400;
+                response.setPayload("Error: Please send the JSON payload in the correct format");
+            }
+        } else {
+            // Send an error response in case of an error in retriving the request payload
+            response.statusCode = 500;
+            response.setPayload("Error: An internal error occurred");
+        }
+        var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Log the error for the service maintainers.
+            log:printError("Error responding to the device", err = respondRet);
+        }
+    }
+
+    @http:ResourceConfig {
+        methods: [ '[' /]"DELETE"[ ']' /],
+
+        path: "/[rest.device.name/]/{id}"
+    }
+
+    resource function deleteResource(http:Caller httpCaller, http:Request request, string
+        id) {
+        // Initialize an empty http response message
+        http:Response response = new;
+        // Convert the employeeId string to integer
+        var empID = int.convert(id);
+        if (empID is int) {
+            var deleteStatus = deleteData(empID);
+            // Send the response back to the client with the employee data
+            response.setPayload(deleteStatus);
+        } else {
+            response.statusCode = 400;
+            response.setPayload("Error: Id parameter should be a valid integer");
+        }
+        var respondRet = httpCaller->respond(response);
+        if (respondRet is error) {
+            // Log the error for the service maintainers.
+            log:printError("Error responding to the client", err = respondRet);
+        }
+    }
+}
+
+
+public function createTable()  {
+
+    string sqlString =
+    "CREATE TABLE [rest.device.name/] (id int AUTO_INCREMENT,date varchar(20),time varchar(20),location varchar(20),attribute int,artefact varchar(20), PRIMARY KEY (id));";
+    // Insert data to SQL database by invoking update action
+    var ret = deviceDB->update(sqlString);
+    // Check type to verify the validity of the result from database
+
+}
+
+public function insertData(string date, string time, string location, int attribute, string artefact) returns (json) {
+    json updateStatus;
+    string sqlString =
+    "INSERT INTO [rest.device.name/] (date,time,location,attribute,artefact) VALUES (?,?,?,?,?)";
+    // Insert data to SQL database by invoking update action
+    var ret = deviceDB->update(sqlString, date,time, location,attribute,artefact);
+    // Check type to verify the validity of the result from database
+    if (ret is sql:UpdateResult) {
+        updateStatus = { "Status": "Data Inserted Successfully" };
+    } else {
+        updateStatus = { "Status": "Data Not Inserted", "Error": "Error occurred in data update" };
+        // Log the error for the service maintainers.
+        log:printError("Error occurred in data update", err = ret);
+    }
+    return updateStatus;
+}
+
+public function retrieveById(int id) returns (json) {
+    json jsonReturnValue = {};
+    string sqlString = "SELECT * FROM [rest.device.name/] WHERE id = ?";
+    // Retrieve employee data by invoking select remote function defined in ballerina sql client
+    var ret = deviceDB->select(sqlString, (), id);
+    if (ret is table<record {}>) {
+        // Convert the sql data table into JSON using type conversion
+        var jsonConvertRet = json.convert(ret);
+        if (jsonConvertRet is json) {
+            jsonReturnValue = jsonConvertRet;
+        } else {
+            jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data conversion" };
+            log:printError("Error occurred in data conversion", err = jsonConvertRet);
+        }
+    } else {
+        jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data retrieval" };
+        log:printError("Error occurred in data retrieval", err = ret);
+    }
+    return jsonReturnValue;
+}
+
+public function retrieveAll() returns (json) {
+    json jsonReturnValue = {};
+    string sqlString = "SELECT * FROM [rest.device.name/]";
+    // Retrieve employee data by invoking select remote function defined in ballerina sql client
+    var ret = deviceDB->select(sqlString, ());
+    if (ret is table<record {}>) {
+        // Convert the sql data table into JSON using type conversion
+        var jsonConvertRet = json.convert(ret);
+        if (jsonConvertRet is json) {
+            jsonReturnValue = jsonConvertRet;
+        } else {
+            jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data conversion" };
+            log:printError("Error occurred in data conversion", err = jsonConvertRet);
+        }
+    } else {
+        jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data retrieval" };
+        log:printError("Error occurred in data retrieval", err = ret);
+    }
+    return jsonReturnValue;
+}
+
+
+function updateData(string date, string time, string location, int attribute, string artefact,int id) returns (json) {
+    json updateStatus;
+    string sqlString =
+        "UPDATE [rest.device.name/] SET date = ?, time = ?, location = ?, attribute = ?, artefact = ? WHERE id  = ?";
+    // Insert data to SQL database by invoking update action
+    var ret = deviceDB->update(sqlString, date,time, location,attribute, artefact, id);
+    // Check type to verify the validity of the result from database
+    if (ret is sql:UpdateResult) {
+        updateStatus = { "Status": "Data Inserted Successfully" };
+    } else {
+        updateStatus = { "Status": "Data Not Inserted", "Error": "Error occurred in data update" };
+        // Log the error for the service maintainers.
+        log:printError("Error occurred in data update", err = ret);
+    }
+    return updateStatus;
+}
+
+public function deleteData(int id) returns (json) {
+    json updateStatus;
+
+    string sqlString = "DELETE FROM [rest.device.name/] WHERE id = ?";
+    // Delete existing data by invoking update remote function defined in ballerina sql client
+    var ret = deviceDB->update(sqlString, id);
+    if (ret is sql:UpdateResult) {
+        updateStatus = { "Status": "Data Deleted Successfully" };
+    } else {
+        updateStatus = { "Status": "Data Not Deleted",  "Error": "Error occurred during delete operation" };
+        // Log the error for the service maintainers.
+        log:printError("Error occurred during delete operation", err = ret);
+    }
+    return updateStatus;
+}
+
+public function retrieveLast() returns (json) {
+    json jsonReturnValue = {};
+    string sqlString = "select * from [rest.device.name/] order by id desc limit 1;";
+    // Retrieve employee data by invoking select remote function defined in ballerina sql client
+    var ret = deviceDB->select(sqlString, ());
+    if (ret is table<record {}>) {
+        // Convert the sql data table into JSON using type conversion
+        var jsonConvertRet = json.convert(ret);
+        if (jsonConvertRet is json) {
+            jsonReturnValue = jsonConvertRet;
+        } else {
+            jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data conversion" };
+            log:printError("Error occurred in data conversion", err = jsonConvertRet);
+        }
+    } else {
+        jsonReturnValue = { "Status": "Data Not Found", "Error": "Error occurred in data retrieval" };
+        log:printError("Error occurred in data retrieval", err = ret);
+    }
+    return jsonReturnValue;
+}
+		[/file]
+	[/for]
+[/for]
+
+[comment BRIDGE  MQTT/]
+
+[for (broker : MessageBroker | aSystem.messagebroker)]
+	[for (out : OutputBridge | aSystem.messagebroker.bridge)]
+		[file (out.sensor.name.toString().concat('.json'), false, 'UTF-8')]
+['['/]
+	{
+		"id":"2fd02feb.4b81c",
+		"type":"tab",
+		"label":"[out.sensor.name/]",
+		"disabled":false,
+		"info":""
+	}
+	,
+	{
+		"id":"5395ff74.042a3",
+		"type":"mqtt in",
+		"z":"2fd02feb.4b81c",
+		"name":"MQTT IN",
+		"topic":"[out.topic/]",
+		"qos":"2",
+		"datatype":"auto",
+		"broker":"a7d68513.f26bd8",
+		"x":180,
+		"y":80,
+		"wires":['['/]['['/]"3ace6424.a7cbfc"[']'/][']'/]
+	}
+	,
+	{
+		"id":"3ace6424.a7cbfc",
+		"type":"json",
+		"z":"2fd02feb.4b81c",
+		"name":"JSON IN",
+		"property":"payload",
+		"action":"",
+		"pretty":false,
+		"x":340,
+		"y":80,
+		"wires":['['/]['['/]"3e91c700.00329a"[for (uri : String | out.inputorchestrator.URI)],"268be48c.bb680[i/]"[/for][']'/][']'/]
+	}
+	,
+	{	
+		"id":"3e91c700.00329a",
+		"type":"http request",
+		"z":"2fd02feb.4b81c",
+		"name":"POST API RESTFULL",
+		"method":"POST",
+		"ret":"txt",
+		"paytoqs":false,
+		"url":"[for (webservice : WebService | aSystem.webservice)]
+	[for (rest : REST | webservice.rest)]
+		[for (device : Device | rest.device)]
+			[if (device.eClass().name.toString()='Sensor' )]
+				[if (device.name.toString()=out.sensor.name )]
+http://[webservice.webserver.host/]:[rest.port/]/[rest.URI/]/[device.name/]",
+				[/if]
+			[/if]
+		[/for]
+	[/for]
+[/for]
+		"tls":"",
+		"proxy":"",
+		"authType":"",
+		"x":560,
+		"y":80,
+		"wires":['['/]['['/][']'/][']'/]
+	}
+			[for (uri : String | out.inputorchestrator.URI)]
+	,
+	{
+		"id":"268be48c.bb680[i/]",
+		"type":"http request",
+		"z":"2fd02feb.4b81c",
+		"name":"POST ORQUESTATOR",
+		"method":"POST",
+		"ret":"txt",
+		"paytoqs":false,
+		"url":[for (integration : IntegrationPattern | aSystem.integrationpattern)]
+	[for (orchestrator : Orchestrator | integration.orchestrator)]
+		[for (trigger : InputOrchestrator | orchestrator.inputorchestrator)]
+			[if (uri = trigger.URI.toString())]
+"http://[integration.webserver.host/]:[orchestrator.port/]/[orchestrator.name/]/[trigger.URI/]",
+			[/if]
+		[/for]
+	[/for]
+[/for]
+		"tls":"",
+		"proxy":"",
+		"authType":"",
+		"x":570,
+		"y":[i/]60,
+		"wires":['['/]['['/][']'/][']'/]
+	}
+			[/for]
+	,
+	{
+		"id":"a7d68513.f26bd1",
+		"type":"mqtt-broker",
+		"z":"",
+		"name":"[aSystem.name/]Broker",
+		"broker":"[broker.host/]",
+		"port":"[broker.port/]",
+		"clientid":"",
+		"usetls":false,
+		"compatmode":true,
+		"keepalive":"60",
+		"cleansession":true,
+		"birthTopic":"",
+		"birthQos":"0",
+		"birthPayload":"",
+		"closeTopic":"",
+		"closeQos":"0",
+		"closePayload":"",
+		"willTopic":"",
+		"willQos":"0",
+		"willPayload":""
+	}
+
+[']'/]
+		[/file]
+	[/for]
+
+
+	[for (input : InputBridge | aSystem.messagebroker.bridge)]
+		[file (input.actuator.name.toString().concat('.txt'), false, 'UTF-8')]
+['['/]
+	{
+		"id":"2fd02feb.4b81c",
+		"type":"tab",
+		"label":"[input.actuator.name/]",
+		"disabled":false,
+		"info":""
+	}
+	,
+	{
+		"id":"d98a9e5d.a130c",
+		"type":"http in",
+		"z":"2fd02feb.4b81c",
+		"name":"API REST (POST)",
+		"url":"/mqtt/[input.actuator.name/]",
+		"method":"post",
+		"upload":false,
+		"swaggerDoc":"",
+		"x":160,"y":80,
+		"wires":['['/]['['/]"47e14c17.fb05c4"[']'/][']'/],
+		"info":""
+	}
+	,
+	{
+		"id":"47e14c17.fb05c4",
+		"type":"json",
+		"z":"2fd02feb.4b81c",
+		"name":"JSON IN",
+		"property":"payload",
+		"action":"",
+		"pretty":false,
+		"x":380,
+		"y":80,
+		"wires":['['/]['['/]"707fe980.de28c8","afd75f27.412b8"[']'/][']'/]
+	}
+	,
+	{	
+		"id":"707fe980.de28c8",
+		"type":"http request",
+		"z":"2fd02feb.4b81c",
+		"name":"POST API RESTFULL",
+		"method":"POST",
+		"ret":"txt",
+		"paytoqs":false,
+		"url":"[for (webservice : WebService | aSystem.webservice)]
+	[for (rest : REST | webservice.rest)]
+		[for (device : Device | rest.device)]
+			[if (device.eClass().name.toString()='Actuator' )]
+				[if (device.name.toString()=input.actuator.name )]
+http://[webservice.webserver.host/]:[rest.port/]/[rest.URI/]/[device.name/]",
+				[/if]
+			[/if]
+		[/for]
+	[/for]
+[/for]
+		"tls":"",
+		"proxy":"",
+		"authType":"",
+		"x":640,
+		"y":80,
+		"wires":['['/]['['/][']'/][']'/]
+	}
+	,
+	{
+		"id":"afd75f27.412b8",
+		"type":"mqtt out",
+		"z":"2fd02feb.4b81c",
+		"name":"MQTT OUT",
+		"topic":"[input.actuator.name/]",
+		"qos":"",
+		"retain":"",
+		"broker":"a7d68513.f26bd8",
+		"x":610,
+		"y":160,
+		"wires":['['/][']'/]
+	}
+	,
+	{
+		"id":"a7d68513.f26bd1",
+		"type":"mqtt-broker",
+		"z":"",
+		"name":"[aSystem.name/]Broker",
+		"broker":"[broker.host/]",
+		"port":"[broker.port/]",
+		"clientid":"",
+		"usetls":false,
+		"compatmode":true,
+		"keepalive":"60",
+		"cleansession":true,
+		"birthTopic":"",
+		"birthQos":"0",
+		"birthPayload":"",
+		"closeTopic":"",
+		"closeQos":"0",
+		"closePayload":"",
+		"willTopic":"",
+		"willQos":"0",
+		"willPayload":""
+	}
+[']'/]
+		[/file]
+	[/for]
+[/for]
+
+[comment NODO DE HARDWARE/]
+
+[for (nodo : IoTNode | aSystem.iotnode)]
+	[for (controller : Controller | nodo.device)]
+		[file (controller.name.toString().concat('.ino'), false, 'UTF-8')]
+
+/***   BOARD :  [controller.name/]  ***/
+#include "DHT.h"
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <PubSubClient.h> 
+#include <Servo.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+			[for(comm: Communication | controller.communication)]
+#define WIFI_SSID "[comm.accespoint.ssid/]"
+#define WIFI_PASSWORD "[comm.accespoint.pass/]"
+			[/for]	
+
+			[for(comm: Communication | controller.communication)]
+const char * mqttServer = "[comm.messagebroker.host/]"; 
+const int mqttPort =  [comm.messagebroker.port/]; 
+const char * mqttUser = "[comm.messagebroker.usser/]"; 
+const char * mqttPassword = "[comm.messagebroker.pass/]"; 
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+			[/for]	
+
+#define DEBUG(a) Serial.println(a);
+String data;
+
+			[for (out1 : OutputPort | controller.port)]
+				[if (out1.actuator.type.toString()='Servo')]
+Servo servoMotor[out1.actuator.name/];
+				[/if]
+			[/for]
+
+			[for (out1 : OutputPort | controller.port)]
+				[if (out1.actuator.type.toString()='LCD')]
+int scl = D3;
+int sda = D4;
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+				[/if]
+			[/for]
+[for (act1 : Sensor | nodo.device)]
+String flag[act1.name/] = ""; 
+[/for]
+
+/***   Global variables  ***/
+			[for (out1 : OutputPort | controller.port)]
+				[if (out1.type.toString()='Digital')]
+int [out1.actuator.name/]=D[out1.id/];
+				[/if]
+			[/for]
+
+			[for (in1 : InputPort | controller.port)]
+				[if (in1.type.toString()='Digital')]
+					[if (in1.sensor.type.toString() = 'TempHum')]
+int [in1.sensor.name/]=D[in1.id/];
+DHT dht([in1.sensor.name/], DHT11);
+					[else]
+int [in1.sensor.name/]=D[in1.id/];
+					[/if]
+				[/if]
+				[if (in1.type.toString()='Analog')]
+int [in1.sensor.name/]=A[in1.id/];
+				[/if]
+			[/for]
+
+			[for(acces: AccesPoint | controller.communication.accespoint)]
+void wifi() {
+	WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+	Serial.print("connecting");
+	while (WiFi.status() != WL_CONNECTED) 
+  	{
+		Serial.print(".");
+		delay(500);
+  	}
+  	Serial.println();
+  	Serial.print("connected: ");
+  	Serial.println(WiFi.localIP());
+}
+			[/for]	
+
+			[for(mess: MessageBroker | controller.communication.messagebroker)]
+void mqtt() {
+    client.setServer(mqttServer, mqttPort);
+    client.setCallback(callback);
+
+    while (!client.connected()) {
+    Serial.println("Conectando a MQTT...");
+    if (client.connect("ESP8266Client", mqttUser, mqttPassword )) 
+    {
+      Serial.println("Connectado");  
+	//----- Topicos MQTT-----
+[for (act1 : Actuator | nodo.device)]
+      client.subscribe("[act1.name/]"); 
+[/for]
+
+    } 
+    else 
+    {
+		Serial.print("falla con estado: ");
+        Serial.println(client.state());
+        delay(2000);
+    }
+  }  
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+	Serial.print("Mensaje llegado en topico: ");
+	Serial.println(topic);
+	String topico = String(topic);
+	Serial.print("Mensaje:");
+	String aux;
+	for (int i = 0; i < length; i++) {
+		Serial.print((char)payload['['/]i[']'/]);
+		aux=aux+(char)payload['['/]i[']'/];
+	}
+	Serial.println();
+	actuators(aux);
+}
+			[/for]	
+
+void actuators(String aux){
+	delay(1000);
+
+  	int aux1 = aux.indexOf("attribute\":", 0);
+  	int aux2 = aux.indexOf(",\"ar", 0);
+  	String atributo=aux.substring(aux1+11, aux2);
+
+  	int aux11 = aux.indexOf("artefact\":", 0);
+  	int aux22 = aux.indexOf("}", 0);
+  	String artefacto=aux.substring(aux11+11, aux22-1);
+
+			[for (actuator : Actuator | nodo.device)]
+				[if (actuator.type.toString()='Buzzer')]
+	//-----[actuator.type/] : [actuator.name/]-----//
+ 	if(artefacto=="[actuator.name/]"){
+		int numero = String(atributo).toInt();
+  		if(numero==1){
+    		tone([actuator.name/], 500, 300);
+            delay(1000);
+    		tone([actuator.name/], 500, 300);
+          	delay(1000);
+    		tone([actuator.name/], 500, 300);
+          	delay(1000);
+    		tone([actuator.name/], 500, 300);
+          	delay(1000);
+    		tone([actuator.name/], 500, 300);
+          	delay(1000);
+		}
+	}
+
+				[/if]
+				[if (actuator.type.toString()='Led')]
+	//-----[actuator.type/] : [actuator.name/]-----//
+	if(artefacto=="[actuator.name/]"){
+		int numero = String(atributo).toInt();
+  		if(numero==1){
+    		digitalWrite([actuator.name/],HIGH);
+    	}
+    	else{
+    		digitalWrite([actuator.name/],LOW);
+    	}
+	}
+				[/if]
+				[if (actuator.type.toString()='Relay')]
+	//-----[actuator.type/] : [actuator.name/]-----//
+	// 5v
+	if(artefacto=="[actuator.name/]"){
+		int numero = String(atributo).toInt();
+  		if(numero==1){
+    		digitalWrite([actuator.name/],HIGH);
+    		Serial.println("encendido");
+    	}
+    	else{
+    		digitalWrite([actuator.name/],LOW);
+    		Serial.println("apagado");
+    	}
+	}
+ 
+				[/if]
+				[if (actuator.type.toString()='Servo')]
+	//-----[actuator.type/] : [actuator.name/]-----//
+	// sg90
+	// 5v
+	// orange pwm
+	// brown gnd
+	// red vcc
+
+ 	if(artefacto=="[actuator.name/]"){
+		int numero = String(atributo).toInt();
+  		if(numero==1){
+			// Desplazamos a la posición 0º
+			servoMotor[actuator.name/].write(0);
+			// Esperamos 1 segundo
+			delay(1000);
+    	}
+    	else{
+			// Desplazamos a la posición 180º
+			servoMotor[actuator.name/].write(180);
+			// Esperamos 1 segundo
+			delay(1000);
+    	}
+	}
+
+				[/if]
+				[if (actuator.type.toString()='LCD')]
+	//-----[actuator.type/] : [actuator.name/]-----//
+	//lcd i2c
+	//scl = D3;
+	//sda = D4;
+ 	if(artefacto=="[actuator.name/]"){
+  		Wire.begin(sda,scl);
+  		lcd.init();
+  		lcd.backlight();
+  		lcd.print(atributo);
+	}
+
+				[/if]
+			[/for]
+}
+
+void sensors(){
+	delay(1000);
+			[for (sensor : Sensor | nodo.device)]
+				[if (sensor.type.toString()='CO2')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+	//MQ-7
+	//ANALOGIC PORT
+	int aux[sensor.name/] = analogRead([sensor.name/]);
+	int PPM[sensor.name/]=(aux[sensor.name/]/10);
+	String auxPPM[sensor.name/] = String(PPM[sensor.name/]);
+
+	if ( flag[sensor.name/] != auxPPM[sensor.name/])
+	{
+	    flag[sensor.name/] = auxPPM[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxPPM[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Light')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+	// fotoresistencia 2kohm
+	// res 1Kohm
+
+  	String auxL[sensor.name/] = String(analogRead([sensor.name/]));
+
+    int numero[sensor.name/] = String(auxL[sensor.name/]).toInt();
+    if(numero[sensor.name/]>275)
+    	auxL[sensor.name/] = "1";
+    else
+        auxL[sensor.name/] = "0";
+
+	if ( flag[sensor.name/] != auxL[sensor.name/])
+	{
+	    flag[sensor.name/] = auxL[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxL[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Button')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+  	String auxB[sensor.name/] = String(digitalRead([sensor.name/]));
+
+	if ( flag[sensor.name/] != auxB[sensor.name/])
+	{
+        flag[sensor.name/] = auxB[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxB[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='HumidityG')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+	int hum[sensor.name/] = analogRead([sensor.name/]);
+	String auxhum[sensor.name/] = String(hum[sensor.name/]);
+
+	if ( flag[sensor.name/] != auxhum[sensor.name/])
+	{
+	    flag[sensor.name/] = auxhum[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxhum[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Vibration')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+	// Digital  Port 
+	// sw-520d
+
+  	String auxV[sensor.name/] = String(digitalRead([sensor.name/]));
+
+	if ( flag[sensor.name/] != auxV[sensor.name/])
+	{
+	    flag[sensor.name/] = auxV[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxV[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='TempHum')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+  	float h[sensor.name/] = dht.readHumidity();
+	float t[sensor.name/] = dht.readTemperature();
+ 	if(isnan(h[sensor.name/])  ||  isnan(t[sensor.name/]))
+	{
+		Serial.println("Error DTH11");
+	}
+    String auxh[sensor.name/] = String(h[sensor.name/]);
+    String auxt[sensor.name/] = String(t[sensor.name/]);
+
+	if ( flag[sensor.name/] != auxt[sensor.name/])
+	{
+	    flag[sensor.name/] = auxt[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxh[sensor.name/]+"-"+String(auxt[sensor.name/])+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Temperature')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+	// Analogic Port 
+	// LM35
+	// V= 5v
+
+	int value[sensor.name/] = analogRead([sensor.name/]);
+  	float millivolts[sensor.name/] = (value[sensor.name/] / 1023.0) * 5000;
+  	float celsius[sensor.name/] = millivolts[sensor.name/] / 10; 
+
+    String auxt1[sensor.name/] = String(celsius[sensor.name/]);
+
+	if ( flag[sensor.name/] != auxt1[sensor.name/])
+	{
+	    flag[sensor.name/] = auxt1[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxt1[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Movement')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+  	// Digital - PIR
+	// V= 5v
+
+	int value[sensor.name/]= digitalRead([sensor.name/]);
+    //Serial.println(value[sensor.name/]);
+
+    String auxM[sensor.name/] = String(value[sensor.name/]);
+
+	if ( flag[sensor.name/] != auxM[sensor.name/])
+	{
+	        flag[sensor.name/] = auxM[sensor.name/];
+		String JSON= "{\"date\":\"...\", \"time\":\"...\", \"location\":\"...\", \"attribute\":"+auxM[sensor.name/]+",\"artefact\":\"[sensor.name/]\"}";
+    	client.publish("[sensor.name/]",String(JSON).c_str(),true); //Topic name
+	    Serial.print("Mensaje publicado en topico: ");
+		Serial.println("[sensor.name/]");
+    	Serial.println(JSON);
+	}
+
+				[/if]
+				[if (sensor.type.toString()='Contact')]
+	//-----[sensor.type/] : [sensor.name/]-----//
+
+				[/if]
+			[/for]
+}
+
+void setup() {
+	delay(5000);
+	Serial.begin(115200);
+			[for (out1 : OutputPort | controller.port)]
+	pinMode([out1.actuator.name/],OUTPUT);
+			[/for]
+			[for (in1 : InputPort | controller.port)]
+				[if (in1.type.toString()='Analog')]
+	pinMode([in1.sensor.name/],INPUT);
+				[else]
+	pinMode([in1.sensor.name/],INPUT_PULLUP);
+				[/if]
+			[/for]
+			[for (out1 : OutputPort | controller.port)]
+				[if (out1.actuator.type.toString()='Servo')]
+	servoMotor[out1.actuator.name/].attach(D[out1.id/]);
+				[/if]
+			[/for]
+			[for(acces: AccesPoint | controller.communication.accespoint)]
+	wifi();
+			[/for]	
+			[for(mess: MessageBroker | controller.communication.messagebroker)]
+	mqtt();
+			[/for]	
+}
+
+void loop() {
+    Serial.flush();
+	if(client.loop()){
+		sensors();
+	}
+	else{
+		Serial.println("desconectado...");
+	}
+}
+		[/file]
+	[/for]
+[/for]
+
+[comment Patron de integracion/]
+
+[for (integration : IntegrationPattern | aSystem.integrationpattern)]
+	[for (orchestrator : Orchestrator | integration.orchestrator)]
+		[file (orchestrator.name.toString().concat('.bal'), false, 'UTF-8')]
+
+import ballerina/http;
+import ballerina/log;
+import ballerina/runtime;
+import ballerina/io;
+
+# Los atributos asociados con el punto final del servicio se definen aquí.
+listener http:Listener asyncServiceEP = new([orchestrator.port/]);
+
+// ApiRESTfull device
+			[for (rest : REST | orchestrator.rest)]
+				[for (ws : WebService | aSystem.webservice)]
+					[for (rest1 : REST | ws.rest)]
+						[if (rest1.device.name = rest.device.name)]
+http:Client [rest.device.name/]EP = new("http://[ws.webserver.host/]:[rest.port/]/[rest.URI/]/[rest.device.name/]");
+						[/if]
+					[/for]
+				[/for]
+			[/for]
+
+// External APIs
+			[for (ext : ExternalAPI | orchestrator.externalapi)]
+http:Client [ext.URI/]EP = new("[ext.URI/]");
+			[/for]
+
+//Bridge
+			[for (func : Function | orchestrator.function)]
+				[for (it : InputBridge | aSystem.messagebroker.bridge)]
+					[if (it.actuator.name = func.outputorchestrator.inputbridge.actuator.name)]
+http:Client [it.actuator.name/]EPmqtt = new("http://[it.host/]:[it.port/]/mqtt/[it.actuator.name/]");
+					[/if]
+				[/for]
+			[/for]
+
+http:Response finalResponse = new;
+json responseJson = ();
+
+/////////////-----------------
+@http:ServiceConfig { basePath: "/[orchestrator.name/]" }
+service AsyncInvoker on asyncServiceEP {
+
+[for (func : Function | orchestrator.function)]
+    // Recurso para organizar un recorrido
+    @http:ResourceConfig { methods: ['['/]"POST"[']'/], consumes: ['['/]"application/json"[']'/], produces: ['['/]"application/json"[']'/] }
+    resource function [func.inputorchestrator.URI/](http:Caller caller, http:Request inRequest) returns error? {
+        http:Response outResponse = new;
+        json inReqPayload = {};
+
+         // Intenta analizar la carga JSON de la solicitud
+        var payloadOr = inRequest.getJsonPayload();
+        if (payloadOr is error) {
+            outResponse.statusCode = 400;
+            outResponse.setJsonPayload({ "Message": "Carga util no valida: no es una carga util JSON valida" });
+            _ = check caller->respond(outResponse);
+            return;
+        } else {
+            inReqPayload = payloadOr;
+        }
+
+        //-----------Datos de consulta --------------------
+			[for (ob : OutputBridge | aSystem.messagebroker.bridge)]
+				[for (it : InputOrchestrator | ob.inputorchestrator)]
+					[if (it.URI.toString() = func.inputorchestrator.URI.toString() )]
+        json orchestrator[ob.sensor.name/]Date = inReqPayload.date;
+        json orchestrator[ob.sensor.name/]Time = inReqPayload.time;
+        json orchestrator[ob.sensor.name/]Location = inReqPayload.location;
+        json orchestrator[ob.sensor.name/]Attribute = inReqPayload.attribute;
+        json orchestrator[ob.sensor.name/]Artefact = inReqPayload.artefact;  
+					[/if]
+				[/for]
+			[/for]
+
+// ApiRESTfull device
+			[for (rest : REST | orchestrator.rest)]
+				[for (ws : WebService | aSystem.webservice)]
+					[for (rest1 : REST | ws.rest)]
+						[if (rest1.device.name = rest.device.name)]
+        future<http:Response|error> fx[rest.device.name/] = start [rest.device.name/]EP->get("/last");
+						[/if]
+					[/for]
+				[/for]
+			[/for]
+
+// External APIs
+			[for (ext : ExternalAPI | orchestrator.externalapi)]
+        future<http:Response|error> gx[ext.URI/] = start [ext.URI/]EP-> get("/");
+			[/for]
+
+// ApiRESTfull device
+			[for (rest : REST | orchestrator.rest)]
+				[for (ws : WebService | aSystem.webservice)]
+					[for (rest1 : REST | ws.rest)]
+						[if (rest1.device.name = rest.device.name)]
+        json response[rest.device.name/]Id = ();
+        json response[rest.device.name/]Date = ();
+        json response[rest.device.name/]Time = ();
+        json response[rest.device.name/]Location = ();
+        json response[rest.device.name/]Attribute = ();
+        json response[rest.device.name/]Artefact = ();
+        json aux[rest.device.name/] = {};
+
+        var response[rest.device.name/] = wait fx[rest.device.name/];
+        if (response[rest.device.name/] is http:Response) {
+
+            var payloadSe= response[rest.device.name/].getJsonPayload();
+            if (payloadSe is json) {
+                aux[rest.device.name/] = payloadSe;
+
+            	response[rest.device.name/]Id= aux[rest.device.name/]['['/]0[']'/].id;
+            	response[rest.device.name/]Date= aux[rest.device.name/]['['/]0[']'/].date;
+           		response[rest.device.name/]Time= aux[rest.device.name/]['['/]0[']'/].time;
+            	response[rest.device.name/]Location= aux[rest.device.name/]['['/]0[']'/].location;
+            	response[rest.device.name/]Attribute= aux[rest.device.name/]['['/]0[']'/].attribute;
+				response[rest.device.name/]Artefact= aux[rest.device.name/]['['/]0[']'/].artefact;
+            }
+        } else {
+                string errorMsg = <string>response[rest.device.name/].detail().message;
+            	log:printError(errorMsg);
+        }
+
+						[/if]
+					[/for]
+				[/for]
+			[/for]
+
+// External APIs
+			[for (ext : ExternalAPI | orchestrator.externalapi)]
+        future<http:Response|error> gx[ext.URI/] = start [ext.URI/]EP-> get("/");
+
+        json response[ext.URI/]Id = ();
+        json response[ext.URI/]Date = ();
+        json response[ext.URI/]Time = ();
+        json response[ext.URI/]Location = ();
+        json response[ext.URI/]Attribute = ();
+        json response[ext.URI/]Artefact = ();
+        json aux[ext.URI/] = {};
+
+        var response[ext.URI/] = wait gx[ext.URI/];
+        if (response[ext.URI/]is http:Response) {
+
+            var payloadSe= response[ext.URI/].getJsonPayload();
+            if (payloadSe is json) {
+                aux[ext.URI/] = payloadSe;
+
+            	response[ext.URI/]Id= aux[ext.URI/]['['/]0[']'/].id;
+            	response[ext.URI/]Date= aux[ext.URI/]['['/]0[']'/].date;
+           		response[ext.URI/]Time= aux[ext.URI/]['['/]0[']'/].time;
+            	response[ext.URI/]Location= aux[ext.URI/]['['/]0[']'/].location;
+            	response[ext.URI/]Attribute= aux[ext.URI/]['['/]0[']'/].attribute;
+				response[ext.URI/]Artefact= aux[ext.URI/]['['/]0[']'/].artefact;
+            }
+        } else {
+                string errorMsg = <string>response[ext.URI/].detail().message;
+            	log:printError(errorMsg);
+        }
+			[/for]
+
+//orquestador
+			[for (ob : OutputBridge | aSystem.messagebroker.bridge)]
+				[for (it : InputOrchestrator | ob.inputorchestrator)]
+					[if (it.URI.toString() = func.inputorchestrator.URI.toString() )]
+        var resulorchestrator[ob.sensor.name/]Attribute = orchestrator[ob.sensor.name/]Attribute;
+        int vresulorchestrator[ob.sensor.name/]Attribute=-1;
+        if (resulorchestrator[ob.sensor.name/]Attribute is int) {
+            vresulorchestrator[ob.sensor.name/]Attribute = resulorchestrator[ob.sensor.name/]Attribute;
+        }
+        io:println(resulorchestrator[ob.sensor.name/]Attribute);
+					[/if]
+				[/for]
+			[/for]
+
+//api restfull
+			[for (rest : REST | orchestrator.rest)]
+				[for (ws : WebService | aSystem.webservice)]
+					[for (rest1 : REST | ws.rest)]
+						[if (rest1.device.name = rest.device.name)]
+        var resulresponse[rest.device.name/]Attribute = aux[rest.device.name/]['['/]0[']'/].attribute;
+        int vresulresponse[rest.device.name/]Attribute=-1;
+        if (resulresponse[rest.device.name/]Attribute is int) {
+            vresulresponse[rest.device.name/]Attribute = resulresponse[rest.device.name/]Attribute;
+        }
+         io:println(resulresponse[rest.device.name/]Attribute);
+						[/if]
+					[/for]
+				[/for]
+			[/for]
+
+//api externa
+			[for (ext : ExternalAPI | orchestrator.externalapi)]
+        var resulresponse[ext.URI/]Attribute = aux[ext.URI/]['['/]0[']'/].attribute;
+        int vresulresponse[ext.URI/]Attribute=-1;
+        if (resulresponse[ext.URI/]Attribute is int) {
+            vresulresponse[ext.URI/]Attribute = resulresponse[ext.URI/]Attribute;
+        }
+            io:println(resulresponse[ext.URI/]Attribute);
+			[/for]
+
+
+//******************** condiciones *****************************
+//orquestador
+			[for (ob : OutputBridge | aSystem.messagebroker.bridge)]
+				[for (it : InputOrchestrator | ob.inputorchestrator)]
+					[if (it.URI.toString() = func.inputorchestrator.URI.toString() )]
+	boolean [ob.sensor.name/] = true;
+
+       	if(resulorchestrator[ob.sensor.name/]Attribute==1)
+		{
+			[ob.sensor.name/] = true;
+		}
+		else
+		{
+			[ob.sensor.name/] = false;
+		}
+					[/if]
+				[/for]
+			[/for]
+
+			[for (puente : OutputBridge | aSystem.messagebroker.bridge)]
+				[if (func.inputorchestrator.URI = puente.inputorchestrator.URI)]
+
+				[/if]	
+			[/for]
+
+//api restfull
+			[for (rest : REST | orchestrator.rest)]
+				[for (ws : WebService | aSystem.webservice)]
+					[for (rest1 : REST | ws.rest)]
+						[if (rest1.device.name = rest.device.name)]
+	boolean [rest.device.name/] = true;
+
+    if(resulresponse[rest.device.name/]Attribute==1)
+	{
+		[rest.device.name/] = true;
+	}
+	else
+	{
+		[rest.device.name/] = false;
+	}
+						[/if]
+					[/for]
+				[/for]
+			[/for]
+
+//api externa
+			[for (ext : ExternalAPI | orchestrator.externalapi)]
+	boolean [ext.URI/] = true;
+
+    if(resulresponse[ext.URI/]Attribute==1)
+	{
+			[ext.URI/] = true;
+	}
+	else
+	{
+			[ext.URI/] = false;
+	}
+			[/for]
+
+//---funciones---
+	boolean [orchestrator.name/]Function=[func.expression/];
+	boolean [orchestrator.name/]Break=[func.break.expression/];
+	string statement = "";
+	int resultado=0;
+
+	if([orchestrator.name/]Function)
+	{
+		resultado=1;
+	}else{
+		resultado=0;
+	}
+
+    if(![orchestrator.name/]Break)
+	{
+				json outReqPayload = {"date":"", "time":"", "location":"", "attribute":0, "artefact":""};
+	            outReqPayload.date = "...";
+	            outReqPayload.time = "...";
+	            outReqPayload.location = "...";
+	            outReqPayload.attribute = resultado;
+			[for (func : Function | orchestrator.function)]
+				[for (it : InputBridge | aSystem.messagebroker.bridge)]
+					[if (it.actuator.name = func.outputorchestrator.inputbridge.actuator.name)]
+	            outReqPayload.artefact = "[it.actuator.name/]";
+	            http:Response inResAirline = check [it.actuator.name/]EPmqtt ->post("/", untaint outReqPayload);
+					[/if]
+				[/for]
+			[/for]
+				statement = "Dato recibido";
+	}
+
+        responseJson['['/]"Respeusta: "[']'/] = statement;
+
+        finalResponse.setJsonPayload(untaint responseJson);
+        log:printInfo(" >> Response : " + responseJson.toString());
+        var result = caller -> respond(finalResponse);
+        if (result is error){
+            log:printError("Error sending response", err = result);
+        }
+    }
+}
+[/for]
+
+
+		[/file]
+	[/for]
+[/for]
+
+
+
+[/template]
