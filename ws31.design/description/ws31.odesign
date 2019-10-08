@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="ws31" version="12.0.0.2017041100">
+  <ownedViewpoints name="IoTIntegrationViewpoint" modelFileExtension="wsmodel3">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="IoTIntegrationDescription" domainClass="wsmodel3::System" enablePopupBars="true">
+      <metamodel href="file:/C:/Users/Doaf/Dropbox/PROGRAMAS/wsmodel3/model/wsmodel3.ecore#/"/>
+      <defaultLayer name="Default"/>
+      <additionalLayers name="Infrastructure" activeByDefault="true">
+        <nodeMappings name="WebServer" semanticCandidatesExpression="[server/]" domainClass="wsmodel3::WebServer">
+          <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="['host: '+thisEObject.host/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/webserver.jpg">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="DBServer" semanticCandidatesExpression="[server/]" domainClass="wsmodel3::DBServer">
+          <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="[thisEObject.type+'\n'+'\nhost: '+thisEObject.host+'\nport: '+thisEObject.port+'\ndatabase: '+thisEObject.database/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/dbserver.jpg">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="AccesPoint" semanticCandidatesExpression="[accespoint/]" domainClass="wsmodel3::AccesPoint">
+          <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="['ssid: '+thisEObject.ssid/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/accespoint.jpg">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <containerMappings name="MessageBroker" semanticCandidatesExpression="[messagebroker/]" domainClass="wsmodel3::MessageBroker">
+          <subNodeMappings name="OutputBridge" semanticCandidatesExpression="[bridge/]" domainClass="wsmodel3::OutputBridge">
+            <style xsi:type="style:SquareDescription" labelSize="10" showIcon="false" labelExpression="['Device: '+thisEObject.sensor.name+'\nAPI: '+'/'+thisEObject.rest.URI+'/'+thisEObject.rest.device.name/]" labelPosition="node" resizeKind="NSEW" width="20" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+            </style>
+          </subNodeMappings>
+          <subNodeMappings name="InputBridge" semanticCandidatesExpression="[bridge/]" domainClass="wsmodel3::InputBridge">
+            <style xsi:type="style:SquareDescription" labelSize="10" showIcon="false" labelExpression="['Device: '+thisEObject.actuator.name+'\nAPI: '+'/'+thisEObject.rest.URI+'/'+thisEObject.rest.device.name+'\n\nURI: /'+thisEObject.host+':'+thisEObject.port+'/mqtt/'+thisEObject.URI /]" iconPath="/ws31.design/icons/iconentrada.png" sizeComputationExpression="4" labelPosition="node" resizeKind="NSEW" width="20" height="6">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='yellow']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="3" labelSize="12" labelExpression="[thisEObject.type+'\n'+'port:'+thisEObject.port+'\n'+'host:'+thisEObject.host/]" iconPath="/ws31.design/icons/brokermessage.jpg" labelAlignment="LEFT">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="Infrastructure">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="WebServer" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='WebServer']" iconPath="/ws31.design/icons/iconws.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::WebServer" referenceName="server"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="DBServer" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='DBServer']" iconPath="/ws31.design/icons/icondbs.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::DBServer" referenceName="server"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="AccesPoint" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='AccesPoint']" iconPath="/ws31.design/icons/iconwifi.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::AccesPoint" referenceName="accespoint"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="MessageBroker" containerMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']" iconPath="/ws31.design/icons/brokericon.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::MessageBroker" referenceName="messagebroker"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="OutputBridge" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']/@subNodeMappings[name='OutputBridge']" iconPath="/ws31.design/icons/output.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::OutputBridge" referenceName="bridge"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="InputBridge" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']/@subNodeMappings[name='InputBridge']" iconPath="/ws31.design/icons/input.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::InputBridge" referenceName="bridge"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+      <additionalLayers name="Control" activeByDefault="true">
+        <nodeMappings name="ExternalAPI" semanticCandidatesExpression="[externalapi/]" domainClass="wsmodel3::ExternalAPI">
+          <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="feature:URI" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/externalapi.jpg">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="WebService2WebServer" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='WebServer']" targetFinderExpression="[webserver/]">
+          <style sizeComputationExpression="3">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="WebService2Database" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='DBServer']" targetFinderExpression="[dbserver/]">
+          <style sizeComputationExpression="3">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Function2InOrchestrator" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@subNodeMappings[name='Function']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='InputOrchestrator']" targetFinderExpression="[inputorchestrator/]">
+          <style sourceArrow="InputArrow" targetArrow="NoDecoration" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Function2OutOrchestrator" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@subNodeMappings[name='Function']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" targetFinderExpression="[outputorchestrator/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Orchestrator2REST" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']/@subNodeMappings[name='REST']" targetFinderExpression="[rest/]">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="OutOrchestrator2InOrchestrator" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='InputOrchestrator']" targetFinderExpression="[inputorchestrator/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="OutOrchestrator2InBridge" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']/@subNodeMappings[name='InputBridge']" targetFinderExpression="[inputbridge/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="OutOrchestrator2REST" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']/@subNodeMappings[name='REST']" targetFinderExpression="[rest/]">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="OutBridge2InOrchestrator" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']/@subNodeMappings[name='OutputBridge']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='InputOrchestrator']" targetFinderExpression="[inputorchestrator/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="IntegrationPattern2WebServer" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='WebServer']" targetFinderExpression="[webserver/]">
+          <style sizeComputationExpression="3">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Orchestrator2ExternalAPI" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@nodeMappings[name='ExternalAPI']" targetFinderExpression="[externalapi/]">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="OutputOrchestrator2ExternalAPI" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@nodeMappings[name='ExternalAPI']" targetFinderExpression="[externalapi/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="WebService" semanticCandidatesExpression="[webservice/]" domainClass="wsmodel3::WebService">
+          <subNodeMappings name="REST" semanticCandidatesExpression="[rest/]" domainClass="wsmodel3::REST">
+            <style xsi:type="style:WorkspaceImageDescription" labelSize="10" showIcon="false" labelExpression="['URI: '+thisEObject.port+''+'/'+thisEObject.URI+'/'+thisEObject.device.name/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/APIREST.jpg">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="3" labelSize="12" labelExpression="['host: '+thisEObject.webserver.host/]" iconPath="/ws31.design/icons/Service.jpg" labelAlignment="LEFT">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="IntegrationPattern" semanticCandidatesExpression="[integrationpattern/]" domainClass="wsmodel3::IntegrationPattern">
+          <subContainerMappings name="Orchestrator" semanticCandidatesExpression="[orchestrator/]" domainClass="wsmodel3::Orchestrator">
+            <borderedNodeMappings name="OutputOrchestrator" semanticCandidatesExpression="[outputorchestrator/]" domainClass="wsmodel3::OutputOrchestrator">
+              <style xsi:type="style:SquareDescription" showIcon="false" labelExpression="[''/]" resizeKind="NSEW">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+              </style>
+            </borderedNodeMappings>
+            <borderedNodeMappings name="InputOrchestrator" semanticCandidatesExpression="[inputorchestrator/]" domainClass="wsmodel3::InputOrchestrator">
+              <style xsi:type="style:SquareDescription" labelSize="10" showIcon="false" labelExpression="['URI: /'+thisEObject.URI/]" resizeKind="NSEW">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='yellow']"/>
+              </style>
+            </borderedNodeMappings>
+            <subNodeMappings name="Function" semanticCandidatesExpression="[function/]" domainClass="wsmodel3::Function">
+              <borderedNodeMappings name="Break" semanticCandidatesExpression="[break/]" domainClass="wsmodel3::Break">
+                <style xsi:type="style:DotDescription" labelSize="10" showIcon="false" labelExpression="Status expression" resizeKind="NSEW">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+                </style>
+              </borderedNodeMappings>
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="10" showIcon="false" labelExpression="Function expression" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/function.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="3" labelSize="12" labelExpression="[thisEObject.name+'\nport: '+thisEObject.port/]" iconPath="/ws31.design/icons/Orchestrator.jpg" labelAlignment="LEFT">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelFormat>bold</labelFormat>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            </style>
+          </subContainerMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="3" labelSize="12" labelExpression="['host:'+thisEObject.webserver.host/]" iconPath="/ws31.design/icons/integration.jpg" labelAlignment="LEFT">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="Control">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="ExternalAPI" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@nodeMappings[name='ExternalAPI']" iconPath="/ws31.design/icons/externalapiicon.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::ExternalAPI" referenceName="externalapi"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="WebService" containerMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']" iconPath="/ws31.design/icons/iconapi.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::WebService" referenceName="webservice"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="REST" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='WebService']/@subNodeMappings[name='REST']" iconPath="/ws31.design/icons/iconoperation.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::REST" referenceName="rest"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Service2WebServer" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='WebService2WebServer']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="webserver" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Service2DataBase" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='WebService2Database']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="dbserver" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="IntegrationPattern" containerMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']" iconPath="/ws31.design/icons/integrationicon.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::IntegrationPattern" referenceName="integrationpattern"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="IntegrattionPattern2WebServer" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='IntegrationPattern2WebServer']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="webserver" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="orchestrator" containerMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']" iconPath="/ws31.design/icons/Orchestratoricon.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Orchestrator" referenceName="orchestrator"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Orchestrator2REST" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='Orchestrator2REST']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="rest" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Orchestrator2ExternalAPI" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='Orchestrator2ExternalAPI']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="externalapi" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="OutOrchestrator" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='OutputOrchestrator']" iconPath="/ws31.design/icons/output.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::OutputOrchestrator" referenceName="outputorchestrator"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="InOrchestrator" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@borderedNodeMappings[name='InputOrchestrator']" iconPath="/ws31.design/icons/input.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::InputOrchestrator" referenceName="inputorchestrator"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="OutOrchestrator2InOrchestrator" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='OutOrchestrator2InOrchestrator']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="inputorchestrator" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="OutOrchestrator2InBridge" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='OutOrchestrator2InBridge']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="inputbridge" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="OutBridge2InOrchestrator" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='OutBridge2InOrchestrator']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="inputorchestrator" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="OutOrchestrator2REST" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='OutOrchestrator2REST']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="rest" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="OutOrchestrator2ExternalAPI" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='OutputOrchestrator2ExternalAPI']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="externalapi" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Function" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@subNodeMappings[name='Function']" iconPath="/ws31.design/icons/functionicon.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Function" referenceName="function"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Status" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@containerMappings[name='IntegrationPattern']/@subContainerMappings[name='Orchestrator']/@subNodeMappings[name='Function']/@borderedNodeMappings[name='Break']" iconPath="/ws31.design/icons/break.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Break" referenceName="break"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Function2InOrchestrator" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='Function2InOrchestrator']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="inputorchestrator" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Function2OutOrchestrator" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']/@edgeMappings[name='Function2OutOrchestrator']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="outputorchestrator" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+      <additionalLayers name="Hardware" activeByDefault="true">
+        <edgeMappings name="Communication2AccesPoint" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='Communication']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@nodeMappings[name='AccesPoint']" targetFinderExpression="[accespoint/]">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Communication2Messagebroker" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='Communication']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']/@containerMappings[name='MessageBroker']" targetFinderExpression="[messagebroker/]">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="In2Sensor" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='InputPort']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Sensor']" targetFinderExpression="[sensor/]">
+          <style sourceArrow="InputArrow" targetArrow="NoDecoration" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="Out2Actuator" sourceMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='OutputPort']" targetMapping="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Actuator']" targetFinderExpression="[actuator/]">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_blue']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="IoTNode" semanticCandidatesExpression="[iotnode/]" domainClass="wsmodel3::IoTNode">
+          <subNodeMappings name="Sensor" semanticCandidatesExpression="[device/]" domainClass="wsmodel3::Sensor">
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Undefined/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="Sensor" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/sensor.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::CO2/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/co2.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Button/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/boton.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::HumidityG/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/humsuelo.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Vibration/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/sw520.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Temperature/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/lm35.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Light/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/fotoresistencia.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Movement/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/movimiento.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::Contact/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/contacto.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=SensorType::TempHum/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/temperatura.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+          </subNodeMappings>
+          <subNodeMappings name="Actuator" semanticCandidatesExpression="[device/]" domainClass="wsmodel3::Actuator">
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::Undefined/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="Actuator" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/actuador.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::Led/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/led.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::Buzzer/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/buzzer.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::Relay/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/rele.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::Servo/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/servo.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ActuatorType::LCD/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="[thisEObject.name+'\nConect SCL in D3 and SDA in d4'/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/LCD.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+          </subNodeMappings>
+          <subNodeMappings name="Controller" semanticCandidatesExpression="[device/]" domainClass="wsmodel3::Controller">
+            <borderedNodeMappings name="OutputPort" semanticCandidatesExpression="[port/]" domainClass="wsmodel3::OutputPort">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="feature:id" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/output.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </borderedNodeMappings>
+            <borderedNodeMappings name="InputPort" semanticCandidatesExpression="[port/]" domainClass="wsmodel3::InputPort">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="feature:id" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/input.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </borderedNodeMappings>
+            <borderedNodeMappings name="Communication" semanticCandidatesExpression="[communication/]" domainClass="wsmodel3::Communication">
+              <conditionnalStyles predicateExpression="[self.type=CommunicationType::Undefined/]">
+                <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="Communication" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/comunicaciones.jpg">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelFormat>bold</labelFormat>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[self.type=CommunicationType::WiFi/]">
+                <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="['ssid: '+thisEObject.accespoint.ssid/]" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/wifi.png">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelFormat>bold</labelFormat>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                </style>
+              </conditionnalStyles>
+              <conditionnalStyles predicateExpression="[self.type=CommunicationType::Serial/]">
+                <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/usbserial.png">
+                  <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                  <labelFormat>bold</labelFormat>
+                  <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                </style>
+              </conditionnalStyles>
+            </borderedNodeMappings>
+            <conditionnalStyles predicateExpression="[self.type=ControllerType::Undefined/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" labelExpression="Controller" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/controldor.jpg">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+            <conditionnalStyles predicateExpression="[self.type=ControllerType::ESP8266/]">
+              <style xsi:type="style:WorkspaceImageDescription" labelSize="12" showIcon="false" sizeComputationExpression="-1" resizeKind="NSEW" workspacePath="/ws31.design/icons/esp8266.png">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelFormat>bold</labelFormat>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              </style>
+            </conditionnalStyles>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="3" labelSize="12" labelExpression="[' '/]" iconPath="/ws31.design/icons/iotnode.jpg" labelAlignment="LEFT">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="Hardware">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="IoTNode" containerMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']" iconPath="/ws31.design/icons/iconiotnode.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::IoTNode" referenceName="iotnode"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Sensor" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Sensor']" iconPath="/ws31.design/icons/iconsensor.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Sensor" referenceName="device"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Actuator" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Actuator']" iconPath="/ws31.design/icons/iconactuador.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Actuator" referenceName="device"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Controller" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']" iconPath="/ws31.design/icons/iconcontroldor.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Controller" referenceName="device"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="InputPort" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='InputPort']" iconPath="/ws31.design/icons/input.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::InputPort" referenceName="port"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="OutputPort" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='OutputPort']" iconPath="/ws31.design/icons/output.png">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::OutputPort" referenceName="port"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Communication" nodeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@borderedNodeMappings[name='Communication']" iconPath="/ws31.design/icons/iconcomunicaciones.jpg">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[container/]">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="wsmodel3::Communication" referenceName="communication"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Comm2AccesPoint" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@edgeMappings[name='Communication2AccesPoint']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="accespoint" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Comm2MBroker" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@edgeMappings[name='Communication2Messagebroker']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="messagebroker" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="In2Sensor" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@edgeMappings[name='In2Sensor']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="sensor" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Out2Actuator" edgeMappings="//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@edgeMappings[name='Out2Actuator']" iconPath="/ws31.design/icons/hilo.jpg">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="actuator" valueExpression="[target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </additionalLayers>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="ws31.design.Services"/>
+  </ownedViewpoints>
+</description:Group>
