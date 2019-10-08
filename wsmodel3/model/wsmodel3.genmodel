@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/wsmodel3/src-gen" creationIcons="false" editDirectory="/wsmodel3.edit/src-gen"
+    editorDirectory="/wsmodel3.editor/src-gen" modelPluginID="wsmodel3" modelName="Wsmodel3"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>wsmodel3.ecore</foreignModel>
+  <testsDirectory xsi:nil="true"/>
+  <genPackages prefix="Wsmodel3" disposableProviderFactory="true" ecorePackage="wsmodel3.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//DBType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//DBType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//DBType/MySQL"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//SensorType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/CO2"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Light"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Button"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/HumidityG"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Vibration"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Temperature"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Movement"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/Contact"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//SensorType/TempHum"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//ActuatorType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/Buzzer"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/Led"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/Relay"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/Servo"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ActuatorType/LCD"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//ControllerType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ControllerType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//ControllerType/ESP8266"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//PortType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//PortType/Digital"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//PortType/Analog"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//CommunicationType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//CommunicationType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//CommunicationType/WiFi"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//CommunicationType/Serial"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wsmodel3.ecore#//MessageBrokerType">
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//MessageBrokerType/Undefined"/>
+      <genEnumLiterals ecoreEnumLiteral="wsmodel3.ecore#//MessageBrokerType/MQTT"/>
+    </genEnums>
+    <genClasses ecoreClass="wsmodel3.ecore#//System">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//System/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/webservice"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/server"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/iotnode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/accespoint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/integrationpattern"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/messagebroker"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//System/externalapi"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//IoTNode">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//IoTNode/device"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Server">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Server/host"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//WebService">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//WebService/rest"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//WebService/webserver"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//WebService/dbserver"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//REST">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//REST/device"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//REST/URI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//REST/port"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//WebServer"/>
+    <genClasses ecoreClass="wsmodel3.ecore#//DBServer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//DBServer/usser"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//DBServer/pass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//DBServer/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//DBServer/port"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//DBServer/database"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Device">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Device/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Device/devicedata"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Sensor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Sensor/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Actuator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Actuator/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Controller">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Controller/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Controller/port"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Controller/communication"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Communication">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Communication/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Communication/communicationdata"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Communication/accespoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Communication/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Communication/messagebroker"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Port">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Port/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Port/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//InputPort">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//InputPort/sensor"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//OutputPort">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputPort/actuator"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//DeviceData"/>
+    <genClasses ecoreClass="wsmodel3.ecore#//CommunicationData"/>
+    <genClasses ecoreClass="wsmodel3.ecore#//Data">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/Date"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/Time"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/Location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/Attribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Data/Artefact"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//AccesPoint">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//AccesPoint/ssid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//AccesPoint/pass"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Bridge">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Bridge/topic"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Bridge/rest"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Bridge/host"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Bridge/port"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//InputBridge">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//InputBridge/actuator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//InputBridge/URI"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//OutputBridge">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputBridge/inputorchestrator"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputBridge/sensor"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//MessageBroker">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//MessageBroker/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//MessageBroker/port"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//MessageBroker/host"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//MessageBroker/bridge"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//MessageBroker/usser"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//MessageBroker/pass"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//IntegrationPattern">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//IntegrationPattern/orchestrator"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//IntegrationPattern/webserver"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Orchestrator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Orchestrator/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Orchestrator/inputorchestrator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Orchestrator/function"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Orchestrator/outputorchestrator"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Orchestrator/port"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Orchestrator/externalapi"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Orchestrator/rest"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//InputOrchestrator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//InputOrchestrator/URI"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Function">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Function/expression"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Function/inputorchestrator"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Function/outputorchestrator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//Function/break"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//OutputOrchestrator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputOrchestrator/inputorchestrator"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputOrchestrator/inputbridge"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputOrchestrator/renponsedata"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputOrchestrator/rest"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference wsmodel3.ecore#//OutputOrchestrator/externalapi"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//OrchestratorData"/>
+    <genClasses ecoreClass="wsmodel3.ecore#//ExternalAPI">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//ExternalAPI/URI"/>
+    </genClasses>
+    <genClasses ecoreClass="wsmodel3.ecore#//Break">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wsmodel3.ecore#//Break/expression"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
