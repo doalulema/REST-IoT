@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xmlns:wsmodel3="http://www.example.org/wsmodel3" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
+  <viewpoint:DAnalysis uid="_Pm9mMOBZEemu_a0qit9W8Q" selectedViews="_Y_5EcOBZEemu_a0qit9W8Q" version="14.1.0.201810161215">
+    <semanticResources>IoT.wsmodel3</semanticResources>
+    <ownedViews xmi:type="viewpoint:DView" uid="_Y_5EcOBZEemu_a0qit9W8Q">
+      <viewpoint xmi:type="description:Viewpoint" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']"/>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_apoCYOBZEemu_a0qit9W8Q" name="new IoTIntegrationDescription" repPath="#_ac_7oOBZEemu_a0qit9W8Q">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']"/>
+        <target xmi:type="wsmodel3:System" href="IoT.wsmodel3#/"/>
+      </ownedRepresentationDescriptors>
+    </ownedViews>
+  </viewpoint:DAnalysis>
+  <diagram:DSemanticDiagram uid="_ac_7oOBZEemu_a0qit9W8Q" name="new IoTIntegrationDescription">
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_apanAOBZEemu_a0qit9W8Q" source="DANNOTATION_CUSTOMIZATION_KEY">
+      <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_apbOEOBZEemu_a0qit9W8Q"/>
+    </ownedAnnotationEntries>
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_arXHwOBZEemu_a0qit9W8Q" source="GMF_DIAGRAMS">
+      <data xmi:type="notation:Diagram" xmi:id="_arXHweBZEemu_a0qit9W8Q" type="Sirius" element="_ac_7oOBZEemu_a0qit9W8Q" measurementUnit="Pixel">
+        <children xmi:type="notation:Node" xmi:id="_dGNZkOBZEemu_a0qit9W8Q" type="2002" element="_dEDdcOBZEemu_a0qit9W8Q">
+          <children xmi:type="notation:Node" xmi:id="_dGTgMOBZEemu_a0qit9W8Q" type="5006"/>
+          <children xmi:type="notation:Node" xmi:id="_dGV8cOBZEemu_a0qit9W8Q" type="7001">
+            <children xmi:type="notation:Node" xmi:id="_eLMrsOBZEemu_a0qit9W8Q" type="3007" element="_eJA6YOBZEemu_a0qit9W8Q">
+              <children xmi:type="notation:Node" xmi:id="_eLN50OBZEemu_a0qit9W8Q" type="5003">
+                <layoutConstraint xmi:type="notation:Location" xmi:id="_eLN50eBZEemu_a0qit9W8Q" y="-21"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_enLdEOBZEemu_a0qit9W8Q" type="3005" element="_enGkkeBZEemu_a0qit9W8Q">
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_enLdEeBZEemu_a0qit9W8Q" fontName="Segoe UI"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_enLdEuBZEemu_a0qit9W8Q"/>
+              </children>
+              <styles xmi:type="notation:ShapeStyle" xmi:id="_eLMrseBZEemu_a0qit9W8Q" fontName="Segoe UI" fontHeight="12" bold="true"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_eLMrsuBZEemu_a0qit9W8Q" x="243" y="72" width="274" height="141"/>
+            </children>
+            <styles xmi:type="notation:SortingStyle" xmi:id="_dGV8ceBZEemu_a0qit9W8Q"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_dGV8cuBZEemu_a0qit9W8Q"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_dGNZkeBZEemu_a0qit9W8Q" fontName="Segoe UI" fontHeight="12" bold="true"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dGNZkuBZEemu_a0qit9W8Q" x="75" y="35" width="703" height="298"/>
+        </children>
+        <styles xmi:type="notation:DiagramStyle" xmi:id="_arXHwuBZEemu_a0qit9W8Q"/>
+      </data>
+    </ownedAnnotationEntries>
+    <ownedDiagramElements xmi:type="diagram:DNodeContainer" uid="_dEDdcOBZEemu_a0qit9W8Q" name=" ">
+      <target xmi:type="wsmodel3:IoTNode" href="IoT.wsmodel3#//@iotnode.0"/>
+      <semanticElements xmi:type="wsmodel3:IoTNode" href="IoT.wsmodel3#//@iotnode.0"/>
+      <ownedStyle xmi:type="diagram:FlatContainerStyle" uid="_dEYNkOBZEemu_a0qit9W8Q" labelSize="12" iconPath="/ws31.design/icons/iotnode.jpg" labelAlignment="LEFT" borderSize="3" borderSizeComputationExpression="3" foregroundColor="255,255,255">
+        <labelFormat>bold</labelFormat>
+        <description xmi:type="style:FlatContainerStyleDescription" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']"/>
+      <ownedDiagramElements xmi:type="diagram:DNode" uid="_eJA6YOBZEemu_a0qit9W8Q" name="Sensores" width="-1" height="-1" resizeKind="NSEW">
+        <target xmi:type="wsmodel3:Controller" href="IoT.wsmodel3#//@iotnode.0/@device.0"/>
+        <semanticElements xmi:type="wsmodel3:Controller" href="IoT.wsmodel3#//@iotnode.0/@device.0"/>
+        <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+        <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+        <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+        <ownedStyle xmi:type="diagram:WorkspaceImage" uid="_enGkkeBZEemu_a0qit9W8Q" labelSize="12" showIcon="false" workspacePath="/ws31.design/icons/esp8266.png">
+          <labelFormat>bold</labelFormat>
+          <description xmi:type="style:WorkspaceImageDescription" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']/@conditionnalStyles.1/@style"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']/@containerMappings[name='IoTNode']/@subNodeMappings[name='Controller']"/>
+      </ownedDiagramElements>
+    </ownedDiagramElements>
+    <description xmi:type="description_1:DiagramDescription" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']"/>
+    <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_aefwcOBZEemu_a0qit9W8Q"/>
+    <activatedLayers xmi:type="description_1:Layer" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@defaultLayer"/>
+    <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Infrastructure']"/>
+    <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Control']"/>
+    <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/resource/ws31.design/description/ws31.odesign#//@ownedViewpoints[name='IoTIntegrationViewpoint']/@ownedRepresentations[name='IoTIntegrationDescription']/@additionalLayers[name='Hardware']"/>
+    <target xmi:type="wsmodel3:System" href="IoT.wsmodel3#/"/>
+  </diagram:DSemanticDiagram>
+</xmi:XMI>

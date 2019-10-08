@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsmodel3:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsmodel3="http://www.example.org/wsmodel3" name="IoT">
+  <iotnode>
+    <device xsi:type="wsmodel3:Controller" name="Sensores" type="ESP8266"/>
+  </iotnode>
+</wsmodel3:System>
