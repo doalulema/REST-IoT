@@ -1,1 +1,5 @@
 # SI4IoT
+
+This repository contains the implementation of the SI4IoT tool kit. To run the tool you must perform the following guidelines. First, Eclipse must be available with the EMF, Sirius and Acceleo add-ons. Second, you must load the metamodel (wsmodel3) and generate the dependencies. Third, a new instance of Eclipse must be opened and the graphical editor (ws31.design) and the code generator (ws31acceleo) must be opened. Finally, the specific path of the metamodel must be configured in the graphic editor.
+
+For the deployment of the generated software artifacts it is necessary to have the following frameworks. First, the Arduino IDE to load the IoT Nodes code into the NODE MCU ESP8266 cards. Secondly, an MQTT broker must be available to manage the topics used in the applications. Thirdly, Node-Red must be available to execute the "Bridge" flows. Fourth, Ballerina must be available to run REST and Orchestrator services. Finally, an SQL database server such as MySQL must be available.
